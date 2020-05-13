@@ -1,0 +1,51 @@
+.login {
+    font-family: -apple-system, "Helvetica Neue", "Arial", "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "微软雅黑", "Microsoft JhengHei", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif;
+}
+
+.login-header {
+    height: 50%;
+}
+
+.login-header-img {
+    height: 100%;
+    width: 100%;
+}
+
+.login-title {
+    font-size: 25px;
+    font-weight: bolder;
+    margin-left: 55px;
+    margin-top: 10px;
+}
+
+.login-box {
+    margin: 20px 40px;
+}
+
+
+.login-box-form {
+    border-radius: 10px;
+
+}
+
+.login-box-btn {
+    width: 200px;
+    height: 45px;
+    position: absolute;
+    left: 50%;
+    margin-left: -100px;
+    margin-top: 40px;
+    letter-spacing: 1px;
+}
+
+.login-box-register {
+    color: #888888;
+    font-size: 13px;
+    font-weight: bolder;
+    margin-top: 110px;
+    text-align: center;
+}
+
+.van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after {
+    border-width: 0;
+}
