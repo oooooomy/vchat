@@ -16,7 +16,7 @@
                     color="#FFFFFF"
                     size="25"/>
             <div class="myself-header-text1">Personal setting</div>
-            <div class="myself-header-text2">Time | Monday 2020-12-34 12:23:47</div>
+            <div class="myself-header-text2">Join us | Monday 2020-12-34 12:23:47</div>
         </div>
         <div class="myself-content">
             <div class="myself-content-header">
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="myself-content-des">
-                This is a real-time websocket chat software with vue as the front-end page and Golang as the server
+                My description: This is a real-time websocket chat software with vue as the front-end page and Golang as the server
                 language, making use of the high-performance network framework gin.
             </div>
             <van-share-sheet
@@ -92,7 +92,7 @@
 
     .myself {
         height: 100vh !important;
-        background-color: rgba(52, 46, 173, 0.9);
+        background-color: rgba(52, 46, 173, 0.8);
         font-family: -apple-system, "Helvetica Neue", "Arial", "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "微软雅黑", "Microsoft JhengHei", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif
     }
 
