@@ -1,0 +1,47 @@
+.van-search .van-cell {
+    padding: 9px 8px;
+}
+
+.index-header {
+    height: 60px !important;
+    box-shadow: 15px 0 15px -15px #000,
+    -15px 0 15px -15px #000;
+}
+
+.van-icon img {
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.user-list {
+    padding: 0 15px;
+}
+
+.user-list-item {
+    display: flex;
+    position: relative;
+    margin-bottom: 17px;
+}
+
+.item-user-nickname {
+    font-size: 15px;
+}
+
+.item-user-time {
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: -5px;
+    color: #d9455f;
+}
+
+.item-user-des {
+    font-size: 9px;
+    color: #1eb2a6;
+    margin-top: 6px;
+}
+
+.me-header {
+    height: 60px!important;
+}
