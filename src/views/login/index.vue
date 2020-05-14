@@ -8,17 +8,18 @@
             <div class="login-box-form">
                 <div class="login-box-item">
                     <van-cell-group>
-                        <van-field v-model="mobile" :border="false" placeholder="Mobile"/>
+                        <van-field v-model="form.mobile" :border="false" type="digit" placeholder="Mobile"/>
                     </van-cell-group>
                 </div>
                 <van-divider style="margin: 3px"/>
                 <div class="login-box-item">
                     <van-cell-group>
-                        <van-field v-model="mobile" :border="false" placeholder="Password"/>
+                        <van-field v-model="form.password" :border="false" type="password" placeholder="Password"/>
                     </van-cell-group>
                 </div>
             </div>
             <van-button
+                    @click="submit"
                     class="login-box-btn"
                     round type="info"
                     color="linear-gradient(to right, #4bb0ff, #6149f6)">
@@ -32,12 +33,28 @@
 </template>
 
 <script>
+    import {checkLoginForm} from "../../utils/check";
+
     export default {
         name: "index",
         data() {
             return {
-                mobile: '',
-                password: ''
+                form: {
+                    mobile: '',
+                    password: ''
+                },
+            }
+        },
+
+        methods: {
+            submit() {
+                if (checkLoginForm(this.form).valueOf()) {
+
+                    //登录逻辑
+                    //保存登录信息
+                    localStorage.setItem("token", '1')
+                    this.$router.push('/')
+                }
             }
         }
     }
