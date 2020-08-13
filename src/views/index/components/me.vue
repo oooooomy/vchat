@@ -16,7 +16,7 @@
                     color="#FFFFFF"
                     size="25"/>
             <div class="myself-header-text1">Personal setting</div>
-            <div class="myself-header-text2">Join us | Monday 2020-12-34 12:23:47</div>
+            <div class="myself-header-text2">Join us | Monday {{user.time}}</div>
         </div>
         <div class="myself-content">
             <div class="myself-content-header">
@@ -24,9 +24,9 @@
                         name="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                         size="50"/>
                 <div>
-                    <div style="margin-top: 8px;font-weight: 500">Aa ya~</div>
+                    <div style="margin-top: 8px;font-weight: 500">{{user.nickname}}</div>
                     <div style="color: #888888;font-size: 11px;margin-top: 6px;font-weight: 400">
-                        Mobile 86 - 15093361631
+                        Mobile 86 - {{user.mobile}}
                     </div>
                 </div>
                 <div>
@@ -39,7 +39,8 @@
                 </div>
             </div>
             <div class="myself-content-des">
-                My description: This is a real-time websocket chat software with vue as the front-end page and Golang as the server
+                My description: This is a real-time websocket chat software with vue as the front-end page and Golang as
+                the server
                 language, making use of the high-performance network framework gin.
             </div>
             <van-share-sheet
@@ -53,6 +54,8 @@
 </template>
 
 <script>
+    import {getUserById} from "../../../api/user";
+
     export default {
         name: "me",
         data() {
@@ -65,6 +68,15 @@
                 ],
             }
         },
+
+        mounted() {
+            getUserById(localStorage.getItem("token")).then((res) => {
+                if (res.status === true) {
+                    this.user = res.data.user
+                }
+            })
+        },
+
         methods: {
             back() {
                 this.$router.go(0)
@@ -163,6 +175,6 @@
         line-height: 22px;
         font-size: 13px;
         color: #888888;
-        word-break:break-all;
+        word-break: break-all;
     }
 </style>

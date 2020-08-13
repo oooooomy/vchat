@@ -15,78 +15,97 @@
                 </van-button>
             </template>
         </van-nav-bar>
-        <AddGroup />
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-            <van-list
-                    class="user-list"
-                    style="margin-top: 20px"
-                    v-model="loading"
-                    :finished="finished"
-                    finished-text="没有更多了"
-                    @load="onLoad"
-            >
-                <div v-for="(item,index) in list" :key="index" class="user-list-item">
-                    <van-icon
-                            style="margin-right: 3px;"
-                            name="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                            size="50"/>
-                    <div style="margin-top: 8px">
-                        <div class="item-user-nickname">相亲相爱一家人</div>
-                        <div class="item-user-time">Monday</div>
-                        <div class="item-user-des">成员 (20)</div>
-                    </div>
+        <van-contact-card
+                add-text="新建群聊"
+                @click="show = true"
+        />
+        <van-popup v-model="show" position="left" :style="{ width: '50%',height: '100%' }">
+            <van-form @submit="onSubmit" style="margin-top: 50px">
+                <van-field
+                        v-model="name"
+                        placeholder="群聊名称"
+                        :rules="[{ required: true, message: '请填写群聊名称' }]"
+                />
+                <div style="margin: 16px;">
+                    <van-button round block type="info" native-type="submit">
+                        提交
+                    </van-button>
                 </div>
-            </van-list>
-        </van-pull-refresh>
+            </van-form>
+        </van-popup>
+        <van-list
+                class="user-list"
+                style="margin-top: 20px"
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+        >
+            <div v-for="(item,index) in list" :key="index" class="user-list-item" @click="openChat(item.id)">
+                <van-icon
+                        style="margin-right: 3px;"
+                        name="https://img.yzcdn.cn/vant/cat.jpeg"
+                        size="50"/>
+                <div style="margin-top: 8px">
+                    <div class="item-user-nickname">{{item.name}}</div>
+                    <div class="item-user-time">{{item.time}}</div>
+                    <div class="item-user-des">成员 ({{item.number}})</div>
+                </div>
+            </div>
+        </van-list>
     </div>
 </template>
 
 <script>
-    import AddGroup from "../../../components/AddGroup";
+    import {createGroup, getGroup} from "../../../api/group";
+    import {checkGroupName} from "../../../utils/check";
 
     export default {
-        components: {
-            AddGroup
-        },
         data() {
             return {
+                show: false,
+                name: '',
                 list: [],
                 loading: false,
                 finished: false,
-                refreshing: false,
                 searchValue: ''
             };
         },
+
+        mounted() {
+
+        },
         methods: {
             onLoad() {
-                setTimeout(() => {
-                    if (this.refreshing) {
-                        this.list = [];
-                        this.refreshing = false;
+                getGroup().then((res) => {
+                    if (res.status === true) {
+                        this.list = res.data.groups
+                        setTimeout(() => {
+                            this.finished = true
+                        }, 800)
                     }
-
-                    for (let i = 0; i < 10; i++) {
-                        this.list.push(this.list.length + 1);
-                    }
-                    this.loading = false;
-
-                    if (this.list.length >= 40) {
-                        this.finished = true;
-                    }
-                }, 800);
-            },
-            onRefresh() {
-                // 清空列表数据
-                this.finished = false;
-
-                // 重新加载数据
-                // 将 loading 设置为 true，表示处于加载状态
-                this.loading = true;
-                this.onLoad();
+                })
             },
 
             refresh() {
                 location.reload();
+            },
+
+            onSubmit() {
+                if (checkGroupName(this.name.valueOf()).valueOf()) {
+                    createGroup(this.name.valueOf()).then((res) => {
+                        if (res.status === true) {
+                            this.onLoad()
+                        }
+                    })
+                    this.show = false;
+                    this.name = ''
+                }
+
+            },
+
+            openChat(id) {
+                this.$router.push('/groupChat/' + id)
             }
         },
     };

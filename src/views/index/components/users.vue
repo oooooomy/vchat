@@ -16,79 +16,68 @@
             </template>
         </van-nav-bar>
         <van-search
-                style="height: 70px;margin-bottom: 30px;margin-top: 8px"
+                style="margin-bottom: 30px;margin-top: 8px"
                 v-model="searchValue"
                 shape="round"
                 placeholder="  搜索在线用户 ..."
         />
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-            <van-list
-                    class="user-list"
-                    v-model="loading"
-                    :finished="finished"
-                    finished-text="没有更多了"
-                    @load="onLoad"
-            >
-                <div v-for="(item,index) in list" :key="index" class="user-list-item" @click="openChat(index)">
-                    <van-icon
-                            style="margin-right: 3px;"
-                            name="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                            size="50"/>
-                    <div style="margin-top: 8px">
-                        <div class="item-user-nickname">Aa ya~</div>
-                        <div class="item-user-time">Monday</div>
-                        <div class="item-user-des">Online</div>
+        <van-list
+                class="user-list"
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多用户在线了"
+                @load="onLoad"
+        >
+            <div v-for="(item,index) in list" :key="index" class="user-list-item" @click="openChat(item.id)">
+                <van-icon
+                        style="margin-right: 3px;"
+                        name="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                        size="50"/>
+                <div style="margin-top: 8px">
+                    <div v-if="item.id === token" class="item-user-nickname">
+                        我
                     </div>
+                    <div v-else class="item-user-nickname">{{item.nickname}}</div>
+                    <div class="item-user-time">Monday</div>
+                    <div class="item-user-des">Online</div>
                 </div>
-            </van-list>
-        </van-pull-refresh>
+            </div>
+        </van-list>
     </div>
 </template>
 
 <script>
+    import {getOnlineUser} from "../../../api/user";
+
     export default {
         data() {
             return {
                 list: [],
                 loading: false,
                 finished: false,
-                refreshing: false,
-                searchValue: ''
+                searchValue: '',
+                token: localStorage.getItem("token")
             };
         },
+
+        mounted() {
+        },
+
         methods: {
             openChat(id) {
-                this.$router.push("/chat/" + id)
+                this.$router.push("/privateChat/" + id)
             },
 
             onLoad() {
-                setTimeout(() => {
-                    if (this.refreshing) {
-                        this.list = [];
-                        this.refreshing = false;
-                    }
-
-                    for (let i = 0; i < 10; i++) {
-                        this.list.push(this.list.length + 1);
-                    }
-                    this.loading = false;
-
-                    if (this.list.length >= 40) {
-                        this.finished = true;
-                    }
-                }, 800);
-            },
-            onRefresh() {
-                // 清空列表数据
-                this.finished = false;
-
-                // 重新加载数据
-                // 将 loading 设置为 true，表示处于加载状态
-                this.loading = true;
-                this.onLoad();
+                getOnlineUser().then((res) => {
+                    this.list = res.data.users
+                    setTimeout(() => {
+                        this.finished = true
+                    }, 800)
+                })
             },
 
-            refresh(){
+            refresh() {
                 location.reload()
             }
         },

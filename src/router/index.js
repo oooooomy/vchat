@@ -12,9 +12,15 @@ const routes = [
         meta: {auth: true}
     },
     {
-        path: '/chat/:id',
-        name: 'Chat',
-        component: () => import('../views/chat/index'),
+        path: '/privateChat/:id',
+        name: 'privateChat',
+        component: () => import('../views/chat/private'),
+        meta: {auth: true}
+    },
+    {
+        path: '/groupChat/:id',
+        name: 'groupChat',
+        component: () => import('../views/chat/group'),
         meta: {auth: true}
     },
     {

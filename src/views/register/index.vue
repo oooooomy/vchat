@@ -40,6 +40,7 @@
 
 <script>
     import {checkRegisterForm} from "../../utils/check";
+    import {userRegister} from "../../api/user";
 
     export default {
         name: "index",
@@ -57,8 +58,11 @@
             submit() {
                 if (checkRegisterForm(this.form).valueOf()) {
                     //注册逻辑
-
-                    this.$router.push('/login')
+                    userRegister(this.form).then((res) => {
+                        if (res.status === true) {
+                            this.$router.push('/login')
+                        }
+                    })
                 }
             }
         }

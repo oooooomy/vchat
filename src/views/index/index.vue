@@ -32,7 +32,7 @@
             refresh() {
                 location.reload()
             }
-        }
+        },
     };
 </script>
 

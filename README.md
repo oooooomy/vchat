@@ -1,6 +1,22 @@
 # chat-mobile
 
-## Project setup
+## 项目预览
+- 登录页面
+![登录页面-iPhone预览](https://gaoyuanming-photo.oss-cn-beijing.aliyuncs.com/vchat/WechatIMG3.png)
+
+- 注册页面
+![注册页面-iPhone预览](https://gaoyuanming-photo.oss-cn-beijing.aliyuncs.com/vchat/WechatIMG4.png)
+
+- 用户页面
+![用户页面-iPhone预览](https://gaoyuanming-photo.oss-cn-beijing.aliyuncs.com/vchat/WechatIMG7.png)
+
+- 首页页面
+![首页页面-PC预览](https://gaoyuanming-photo.oss-cn-beijing.aliyuncs.com/vchat/%E6%88%AA%E5%B1%8F2020-08-13%E4%B8%8B%E5%8D%885.12.00.png)
+
+- 聊天页面
+![聊天页面-PC预览](https://gaoyuanming-photo.oss-cn-beijing.aliyuncs.com/vchat/%E6%88%AA%E5%B1%8F2020-08-13%E4%B8%8B%E5%8D%885.11.50.png)
+
+## 项目配置
 ```
 yarn install
 ```
@@ -14,6 +30,5 @@ yarn serve
 ```
 yarn build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 联系QQ: 1729677089
+### 喜欢的话给个 Star～～～ 😍😍😍

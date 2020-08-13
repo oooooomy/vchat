@@ -12,8 +12,8 @@
                         name="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                         size="42"/>
                 <div>
-                    <div style="margin-left: 8px"><b>Aa ya~</b></div>
-                    <div><b style="color: green;font-size: 12px">Online</b></div>
+                    <div style="margin-left: 8px"><b>{{user.nickname}}</b></div>
+                    <div><b style="color: green;font-size: 12px;margin-left: 8px"> Online</b></div>
                 </div>
             </template>
             <template #right>
@@ -30,7 +30,9 @@
                 <div v-if="item.send_from===myToken" class="message-item right">
                     {{item.content}}
                 </div>
-                <div v-else class="message-item">{{item.content}}</div>
+                <div v-else class="message-item">
+                    {{item.content}}
+                </div>
                 <div class="item-occupy"/>
             </div>
         </div>
@@ -54,6 +56,8 @@
 </template>
 
 <script>
+    import {getUserById} from "../../api/user";
+
     export default {
         name: "index",
 
@@ -62,6 +66,8 @@
                 send_to: '',
                 myToken: '',
                 inputMsg: '',
+                ws: {},
+                user: {},
                 msgList: [
                     {
                         send_from: this.myToken,
@@ -73,7 +79,20 @@
         },
 
         mounted() {
+            this.myToken = localStorage.getItem("token")
             this.send_to = this.$route.params.id
+            this.ws = this.$store.state.ws
+            getUserById(this.send_to).then((res) => {
+                if (res.status === true) {
+                    this.user = res.data.user
+                }
+            })
+            this.ws.onmessage = (evt) => {
+                if (evt.data) {
+                    const msg = JSON.parse(evt.data)
+                    this.msgList.push(msg)
+                }
+            }
         },
 
         methods: {
@@ -82,100 +101,31 @@
             },
 
             sendMessage() {
-                const msg = {
-                    send_from: this.myToken,
-                    send_to: '2312',
-                    content: this.inputMsg
+                if (this.send_to.valueOf() === this.myToken.valueOf()) {
+                    this.$notify({
+                        message: '您不能给自己发送信息哦',
+                        color: '#FFFFFF',
+                        background: '#d9455f',
+                    });
+                } else {
+                    if (this.inputMsg.length > 0) {
+                        const msg = {
+                            from_name: this.$store.state.user.nickname,
+                            send_from: this.myToken,
+                            send_to: this.send_to,
+                            content: this.inputMsg
+                        }
+                        this.ws.send(JSON.stringify(msg))
+                        this.msgList.push(msg)
+                        this.inputMsg = ''
+                    }
                 }
-                this.msgList.push(msg)
-                this.inputMsg = ''
-            }
+            },
+
         }
     }
 </script>
 
 <style scoped>
-    .chat-header {
-        background-color: #FFFFFF;
-        box-shadow: 15px 0 15px -15px #000,
-        -15px 0 15px -15px #000;
-    }
-
-    .van-icon img {
-        border-radius: 50%;
-    }
-
-    .chat-main {
-        margin-top: 25px;
-        margin-bottom: 70px;
-        padding: 0 20px;
-    }
-
-    .chat-bar {
-        background-color: #FFFFFF;
-        display: flex;
-        width: 100%;
-        height: 70px;
-        position: fixed;
-        bottom: 0;
-        z-index: 999;
-        box-shadow: 15px 0 15px -15px #000,
-        -15px 0 15px -15px #000;
-    }
-
-    .chat-bar-btn {
-        color: #FFFFFF;
-        text-align: center;
-        line-height: 46px;
-        font-size: 24px;
-        font-weight: 800;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #00909e;
-        margin-top: 10px;
-        margin-left: 15px;
-    }
-
-    .send {
-        position: absolute;
-        right: 20px;
-        margin-top: -25px;
-        width: 54px;
-        height: 54px;
-        background-color: #e43f5a;
-    }
-
-    .chat-bar-btn-icon {
-        margin-top: 12px;
-        margin-left: 6px;
-    }
-
-    .van-icon img {
-        margin-right: 0;
-    }
-
-    .message-item {
-        display: inline-block !important;
-        background-color: #FFFFFF;
-        border-radius: 30px;
-        font-size: 12px;
-        padding: 10px 20px;
-        margin-bottom: 10px;
-        margin-right: 50px;
-        line-height: 20px;
-        font-family: Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;;
-    }
-
-    .right {
-        background-color: #dddddd;
-        float: right;
-        margin-left: 50px;
-        margin-right: 0;
-    }
-
-    .item-occupy {
-        width: 100%;
-        clear: both;
-    }
+    @import "../../assets/css/chat.css";
 </style>

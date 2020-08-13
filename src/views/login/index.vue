@@ -34,6 +34,7 @@
 
 <script>
     import {checkLoginForm} from "../../utils/check";
+    import {userLogin} from "../../api/user";
 
     export default {
         name: "index",
@@ -51,9 +52,14 @@
                 if (checkLoginForm(this.form).valueOf()) {
 
                     //登录逻辑
-                    //保存登录信息
-                    localStorage.setItem("token", '1')
-                    this.$router.push('/')
+                    userLogin(this.form).then((res) => {
+                        if (res.status === true) {
+                            const user = res.data.user
+                            //保存登录信息
+                            localStorage.setItem("token", user.id)
+                            this.$router.push('/')
+                        }
+                    })
                 }
             }
         }

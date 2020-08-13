@@ -8,7 +8,7 @@ router.beforeEach((to, from, next) => {
             Notify({
                 message: '请您先登录后再访问页面',
                 color: '#FFFFFF',
-                background: '#1eb2a6',
+                background: '#d9455f',
             });
             next({path: '/login'})
         } else {
